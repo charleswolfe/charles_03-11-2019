@@ -32,11 +32,10 @@ class CharlesUploadController extends Controller
         $filename = strrev(md5(random_bytes(10)));
 
         if ($request->file('file')->move($path, $filename)) {
-
             $charles_file = CharlesUpload::create([
                 'storage_path' => $path,
                 'resource_file_name' => $filename,
-                'mime_type' => 'na', //$request->file('file')->getMimeType() ?: 'na'
+                'mime_type' => $request->file('file')->extension() ?: 'na',
                 'label_file_name' => $original_file_name,
             ]);
 
@@ -60,7 +59,7 @@ class CharlesUploadController extends Controller
         $filename = $charles_file->resource_file_name;
 
         if ($request->file('file')->move($path, $filename)) {
-            $charles_file->mime_type = 'na';
+            $charles_file->mime_type = $request->file('file')->extension() ?: 'na',
             $charles_file->label_file_name = $original_file_name;
             $charles_file->save();
             return response()->json([$charles_file], 200);
