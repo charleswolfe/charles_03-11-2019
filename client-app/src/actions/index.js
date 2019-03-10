@@ -8,7 +8,6 @@ USER_INFO_SUCCESS,USER_INFO} from './types';
 const ROOT_URL = 'http://localhost:8181';
 
 export function addPost(formData){
-    console.log('in');
   return function(dispatch){
     axios.post(`${ROOT_URL}/api/charles_uploads`, formData,
       {

@@ -10,7 +10,7 @@ class CharlesUpload extends Model
 
     protected $table = "charles_uploads";
 
-    protected  $fillable = ['id','storage_path', 'resource_file_name', 'label_file_name'];
+    protected $fillable = ['id','storage_path', 'resource_file_name', 'label_file_name'];
 
     protected $hidden = [
         'storage_path',
@@ -18,6 +18,4 @@ class CharlesUpload extends Model
     ];
 
     public $incrementing = false;
-
-
 }
