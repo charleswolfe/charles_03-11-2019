@@ -1,6 +1,7 @@
 import axios from 'axios';
 import jwtdecode from 'jwt-decode';
 import {browserHistory} from 'react-router';
+import cookie from 'react-cookies'
 import {AUTH_USER,AUTH_ERROR,LOGOUT_USER,FETCH_POST,ADD_POST,POST_SHOW,DELETE_POST,EDIT_POST,
     UPDATE_POST,FETCH_POST_SUCCESS,EDIT_POST_SUCCESS,POST_SHOW_SUCCESS,UPDATE_POST_SUCCESS,
 USER_INFO_SUCCESS,USER_INFO} from './types';
@@ -8,10 +9,11 @@ USER_INFO_SUCCESS,USER_INFO} from './types';
 const ROOT_URL = 'http://localhost:8181';
 
 export function addPost(formData){
+    console.log(cookie.load('XSRF-TOKEN'));
   return function(dispatch){
     axios.post(`${ROOT_URL}/api/charles_uploads`, formData,
       {
-      headers:{authorization:localStorage.getItem('token')}
+      headers:{'X-XSRF-TOKEN': cookie.load('XSRF-TOKEN')}
     })
     .then(response => {
       dispatch({
@@ -85,7 +87,7 @@ export function updatePost(id, formData){
         dispatch({type:UPDATE_POST});
         axios.post(`${ROOT_URL}/api/charles_uploads/${id}/replace`, formData,
           {
-          headers:{authorization:localStorage.getItem('token')}
+          headers:{'X-XSRF-TOKEN': cookie.load('XSRF-TOKEN')}
         })
         .then(response => {
             dispatch(updatePostSuccess(response));
@@ -106,7 +108,7 @@ export function updatePostSuccess(post){
 export function deletePost(id){
     return function(dispatch) {
       axios.delete(`${ROOT_URL}/api/charles_uploads/${id}`,{
-       headers: { authorization: localStorage.getItem('token') }
+       headers: {'X-XSRF-TOKEN': cookie.load('XSRF-TOKEN')}
       })
         .then(response =>{
             dispatch({
